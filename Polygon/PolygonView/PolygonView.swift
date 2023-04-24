@@ -34,7 +34,7 @@ final class PolygonView: UIView {
     var anchorSize: CGSize = CGSize(width: 10.0, height: 10.0)
 
     /// Border color for polygon
-    var borderColor: UIColor = .black {
+    var borderColor: UIColor = .white {
         didSet {
             shapeLayer.strokeColor = borderColor.cgColor
         }
@@ -48,18 +48,21 @@ final class PolygonView: UIView {
     }
 
     /// Fill color for polygon
-    var fillColor: UIColor = .yellow {
+    var fillColor: UIColor? = nil {
         didSet {
-            shapeLayer.fillColor = fillColor.cgColor
+            shapeLayer.fillColor = fillColor?.cgColor
         }
     }
 
     /// Color for anchor view
-    var anchorColor: UIColor = .blue {
+    var anchorColor: UIColor = .white {
         didSet {
             redrawPolygonAndAnchors()
         }
     }
+
+    /// Closure which will ge called when polygon points are changed
+    var polygonDidChange: ((_ path: CGPath?) -> Void)?
 
     // MARK: - Init and overrides
     override init(frame: CGRect) {
@@ -93,7 +96,7 @@ final class PolygonView: UIView {
         shapeLayer.lineCap = .butt
         shapeLayer.lineJoin = .miter
         shapeLayer.strokeColor = borderColor.withAlphaComponent(0.3).cgColor
-        shapeLayer.fillColor = fillColor.withAlphaComponent(0.3).cgColor
+        shapeLayer.fillColor = fillColor?.withAlphaComponent(0.3).cgColor
     }
 
     private func setupTapGesture() {
@@ -141,9 +144,14 @@ final class PolygonView: UIView {
     private func redrawPolygonAndAnchors() {
         createPolygon()
         createAnchors()
+        polygonDidChange?(shapeLayer.path)
     }
 
     private func createPolygon() {
+        guard !_points.isEmpty else {
+            shapeLayer.path = UIBezierPath().cgPath
+            return
+        }
         let path = UIBezierPath()
         for (index, point) in _points.enumerated() {
             if index == 0 {
@@ -175,6 +183,7 @@ final class PolygonView: UIView {
             anchor.onDrag = { [unowned self] view in
                 self._points[view.tag] = view.center
                 createPolygon()
+                polygonDidChange?(shapeLayer.path)
             }
 
             anchors.append(anchor)

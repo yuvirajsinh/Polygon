@@ -62,6 +62,7 @@ final class PolygonView: UIView {
     }
 
     var gridSize: CGFloat = 40.0
+    var gridEnabled: Bool = false
 
     /// Closure which will ge called when polygon points are changed
     var polygonDidChange: ((_ path: CGPath?) -> Void)?
@@ -115,7 +116,7 @@ final class PolygonView: UIView {
     }
 
     private func addNewPoint(_ newPoint: CGPoint) {
-        let nearestPoint = findSnapToPoint(for: newPoint)
+        let nearestPoint = gridEnabled ? findSnapToPoint(for: newPoint) : newPoint
         guard _points.count < maxPoints else {
             return
         }
@@ -207,7 +208,7 @@ final class PolygonView: UIView {
             }
 
             anchor.onDrag = { [unowned self] (view, state) in
-                let nearestPoint = state == .ended ? findSnapToPoint(for: view.center) : view.center
+                let nearestPoint = state == .ended && gridEnabled ? findSnapToPoint(for: view.center) : view.center
                 if state == .ended {
                     anchor.center = nearestPoint
                 }

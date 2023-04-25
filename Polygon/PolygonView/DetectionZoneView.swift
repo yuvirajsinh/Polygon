@@ -109,6 +109,14 @@ final class DetectionZoneView: UIView {
         }
     }
 
+    /// If grid is enabled or not
+    var gridEnabled: Bool = false {
+        didSet {
+            overlayView.gridEnabled = gridEnabled
+            polygonView.gridEnabled = gridEnabled
+        }
+    }
+
     // MARK: - Init and Overrides
     override init(frame: CGRect) {
         super.init(frame: frame)

@@ -9,6 +9,13 @@ import UIKit
 
 /// Creates view with grid lines
 final class GridView: UIView {
+    var gridEnabled: Bool = false {
+        didSet {
+            if gridEnabled == false {
+                gridLayer.removeFromSuperlayer()
+            }
+        }
+    }
     var gridSize: CGFloat = 40.0
     var gridColor: UIColor = .white {
         didSet {
@@ -55,6 +62,9 @@ final class GridView: UIView {
     }
 
     private func createGrid() {
+        guard gridEnabled else {
+            return
+        }
         gridPoits.removeAll()
         var yPoint: CGFloat = 0
 

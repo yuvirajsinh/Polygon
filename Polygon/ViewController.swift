@@ -28,6 +28,8 @@ class ViewController: UIViewController {
         zoneView.lineWidth = 1.0
         zoneView.anchorSize = CGSize(width: 12.0, height: 12.0)
         zoneView.maxPoints = 8
+        zoneView.gridSize = 20.0
+        zoneView.gridColor = .white.withAlphaComponent(0.5)
 
         zoneView.autoresizingMask = [.flexibleWidth]
         self.view.addSubview(zoneView)

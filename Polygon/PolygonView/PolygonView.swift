@@ -61,6 +61,8 @@ final class PolygonView: UIView {
         }
     }
 
+    var gridSize: CGFloat = 40.0
+
     /// Closure which will ge called when polygon points are changed
     var polygonDidChange: ((_ path: CGPath?) -> Void)?
 
@@ -113,18 +115,19 @@ final class PolygonView: UIView {
     }
 
     private func addNewPoint(_ newPoint: CGPoint) {
+        let nearestPoint = findSnapToPoint(for: newPoint)
         guard _points.count < maxPoints else {
             return
         }
         guard _points.count > 3 else {
-            _points.append(newPoint)
+            _points.append(nearestPoint)
             return
         }
 
         var minDistanceIndex: Int = 0
-        var minDistance: CGFloat = distance(newPoint, _points[0])
+        var minDistance: CGFloat = distance(nearestPoint, _points[0])
         for i in 1..<_points.count {
-            let currDistance = distance(newPoint, _points[i])
+            let currDistance = distance(nearestPoint, _points[i])
             if currDistance < minDistance {
                 minDistance = currDistance
                 minDistanceIndex = i
@@ -134,11 +137,34 @@ final class PolygonView: UIView {
         let prevIndex = minDistanceIndex == 0 ? _points.count - 1 : minDistanceIndex - 1
         let nextIndex = minDistanceIndex == _points.count - 1 ? 0 : minDistanceIndex + 1
 
-        if doIntersect(p1: _points[prevIndex], q1: newPoint, p2: _points[minDistanceIndex], q2: _points[nextIndex]) {
-            _points.insert(newPoint, at: minDistanceIndex + 1)
+        if doIntersect(p1: _points[prevIndex], q1: nearestPoint, p2: _points[minDistanceIndex], q2: _points[nextIndex]) {
+            _points.insert(nearestPoint, at: minDistanceIndex + 1)
         } else {
-            _points.insert(newPoint, at: minDistanceIndex)
+            _points.insert(nearestPoint, at: minDistanceIndex)
         }
+    }
+
+    private func findSnapToPoint(for point: CGPoint) -> CGPoint {
+        let xDiff = point.x.truncatingRemainder(dividingBy: gridSize)
+        let yDiff = point.y.truncatingRemainder(dividingBy: gridSize)
+
+        let topLeft = CGPoint(x: point.x - xDiff, y: point.y - yDiff)
+        let topRight = CGPoint(x: topLeft.x + gridSize, y: topLeft.y)
+        let bottomRight = CGPoint(x: topRight.x, y: topRight.y + gridSize)
+        let bottomLeft = CGPoint(x: topLeft.x, y: bottomRight.y)
+
+        let allPoints = [topRight, bottomRight, bottomLeft]
+        var minDiff: CGFloat = distance(point, topLeft)
+        var nearPoint = topLeft
+
+        for corner in allPoints {
+            let diff = distance(point, corner)
+            if diff < minDiff {
+                minDiff = diff
+                nearPoint = corner
+            }
+        }
+        return nearPoint
     }
 
     private func redrawPolygonAndAnchors() {
@@ -180,8 +206,12 @@ final class PolygonView: UIView {
                 self.redrawPolygonAndAnchors()
             }
 
-            anchor.onDrag = { [unowned self] view in
-                self._points[view.tag] = view.center
+            anchor.onDrag = { [unowned self] (view, state) in
+                let nearestPoint = state == .ended ? findSnapToPoint(for: view.center) : view.center
+                if state == .ended {
+                    anchor.center = nearestPoint
+                }
+                self._points[view.tag] = nearestPoint
                 createPolygon()
                 polygonDidChange?(shapeLayer.path)
             }

@@ -29,7 +29,7 @@ final class PolygonAnchorView: UIView {
     var onClicked: ((UIView) -> Void)?
 
     /// Closure to be called on drag of anchor
-    var onDrag: ((UIView) -> Void)?
+    var onDrag: ((UIView, UIGestureRecognizer.State) -> Void)?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -83,7 +83,7 @@ final class PolygonAnchorView: UIView {
             self.frame = newFrame
             gesture.setTranslation(.zero, in: view)
         }
-        onDrag?(self)
+        onDrag?(self, gesture.state)
     }
 }
 

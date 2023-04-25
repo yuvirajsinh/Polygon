@@ -10,7 +10,7 @@ import UIKit
 final class DetectionZoneView: UIView {
     // MARK: - UI elements
     private let polygonView: PolygonView = PolygonView()
-    private let overlayView: UIView = UIView()
+    private let overlayView: GridView = GridView()
 
     // MARK: - Public vars
     /// Returns polygon points
@@ -88,6 +88,27 @@ final class DetectionZoneView: UIView {
         }
     }
 
+    /// Grid size
+    var gridSize: CGFloat {
+        get {
+            overlayView.gridSize
+        }
+        set {
+            overlayView.gridSize = newValue
+            polygonView.gridSize = newValue
+        }
+    }
+
+    /// Color for the grid
+    var gridColor: UIColor {
+        get {
+            overlayView.gridColor
+        }
+        set {
+            overlayView.gridColor = newValue
+        }
+    }
+
     // MARK: - Init and Overrides
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -108,6 +129,7 @@ final class DetectionZoneView: UIView {
         polygonView.lineWidth = lineWidth
         polygonView.anchorSize = anchorSize
         polygonView.maxPoints = maxPoints
+        polygonView.gridSize = gridSize
 
         polygonView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
 

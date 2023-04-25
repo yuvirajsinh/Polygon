@@ -20,6 +20,7 @@
 		7D8FE12729AF733400C13588 /* PolygonAnchorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8FE12629AF733400C13588 /* PolygonAnchorView.swift */; };
 		7DACF1F029F6807D004B8D09 /* UIView+Clear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DACF1EF29F6807D004B8D09 /* UIView+Clear.swift */; };
 		7DACF1F229F68EC5004B8D09 /* DetectionZoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DACF1F129F68EC5004B8D09 /* DetectionZoneView.swift */; };
+		7DACF1F429F6B2E2004B8D09 /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DACF1F329F6B2E2004B8D09 /* GridView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		7D8FE12629AF733400C13588 /* PolygonAnchorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonAnchorView.swift; sourceTree = "<group>"; };
 		7DACF1EF29F6807D004B8D09 /* UIView+Clear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Clear.swift"; sourceTree = "<group>"; };
 		7DACF1F129F68EC5004B8D09 /* DetectionZoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectionZoneView.swift; sourceTree = "<group>"; };
+		7DACF1F329F6B2E2004B8D09 /* GridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +144,7 @@
 				7DACF1F129F68EC5004B8D09 /* DetectionZoneView.swift */,
 				7D8FE12429AF6D8800C13588 /* PolygonView.swift */,
 				7D8FE12629AF733400C13588 /* PolygonAnchorView.swift */,
+				7DACF1F329F6B2E2004B8D09 /* GridView.swift */,
 				7DACF1EF29F6807D004B8D09 /* UIView+Clear.swift */,
 			);
 			path = PolygonView;
@@ -280,6 +283,7 @@
 			files = (
 				7D8FE0F929AF6CF200C13588 /* ViewController.swift in Sources */,
 				7D8FE12729AF733400C13588 /* PolygonAnchorView.swift in Sources */,
+				7DACF1F429F6B2E2004B8D09 /* GridView.swift in Sources */,
 				7DACF1F029F6807D004B8D09 /* UIView+Clear.swift in Sources */,
 				7D8FE0F529AF6CF200C13588 /* AppDelegate.swift in Sources */,
 				7DACF1F229F68EC5004B8D09 /* DetectionZoneView.swift in Sources */,
